@@ -20,6 +20,7 @@
 #include <string>
 #include <QThread>
 #include <QStringListModel>
+#include <face_recognition/FaceRecognitionAction.h>
 
 
 /*****************************************************************************
@@ -39,6 +40,7 @@ public:
 	virtual ~QNode();
 	bool init();
 	void run();
+	void sendCommand(int orderID, const char *argument);
 
 	/*********************
 	** Logging
@@ -62,7 +64,10 @@ private:
 	int init_argc;
 	char** init_argv;
 	ros::Publisher chatter_publisher;
+	ros::Publisher face_recognition_command;
+	ros::Subscriber face_recognition_feedback;
     QStringListModel logging_model;
+    void feedbackCB(face_recognition::FaceRecognitionFeedback feedback);
 };
 
 }  // namespace face_recognition_interface

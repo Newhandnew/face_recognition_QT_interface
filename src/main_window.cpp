@@ -36,6 +36,8 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	ui.tab_manager->setCurrentIndex(0); // ensure the first tab is showing - qt-designer should have this already hardwired, but often loses it (settings?).
     QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
 
+//    QObject::connect(ui.scrollBar_threshold, SIGNAL(valueChanged(int)), ui.display_threshold, SLOT(display(int)));
+
     // connect to master
     if ( !qnode.init() ) {
         showNoMasterMessage();
@@ -83,6 +85,21 @@ void MainWindow::updateLoggingView() {
 
 void MainWindow::on_actionAbout_triggered() {
     QMessageBox::about(this, tr("About ..."),tr("<h2>PACKAGE_NAME Test Program 0.10</h2><p>Copyright Yujin Robot</p><p>This package needs an about description.</p>"));
+}
+
+void MainWindow::on_btn_start_clicked(bool check) {
+    qnode.sendCommand(1, "none");
+}
+
+void MainWindow::on_btn_new_clicked(bool check) {
+    QString name = ui.textin_name->displayText();
+    qnode.sendCommand(2, name.toUtf8().constData());
+    qnode.sendCommand(3, "none");
+    // qnode.sendCommand(3, "none");
+}
+
+void MainWindow::on_scrollBar_valueChanged(int setting) {
+
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

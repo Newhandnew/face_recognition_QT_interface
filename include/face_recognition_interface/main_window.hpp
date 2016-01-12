@@ -35,6 +35,7 @@ public:
 	MainWindow(int argc, char** argv, QWidget *parent = 0);
 	~MainWindow();
 
+
 	void closeEvent(QCloseEvent *event); // Overloaded function
 	void showNoMasterMessage();
 
@@ -43,6 +44,11 @@ public Q_SLOTS:
 	** Auto-connections (connectSlotsByName())
 	*******************************************/
 	void on_actionAbout_triggered();
+	void on_btn_start_clicked(bool check);
+	void on_btn_new_clicked(bool check);
+	void on_scrollBar_valueChanged(int setting);
+
+
     /******************************************
     ** Manual connections
     *******************************************/

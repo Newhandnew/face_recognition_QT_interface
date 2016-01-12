@@ -14,6 +14,8 @@
 #include <ros/network.h>
 #include <string>
 #include <std_msgs/String.h>
+#include <face_recognition/FRClientGoal.h>
+#include <face_recognition/FaceRecognitionAction.h>
 #include <sstream>
 #include "../include/face_recognition_interface/qnode.hpp"
 
@@ -48,30 +50,35 @@ bool QNode::init() {
 	ros::start(); // explicitly needed since our nodehandle is going out of scope.
 	ros::NodeHandle n;
 	// Add your ros communications here.
-	chatter_publisher = n.advertise<std_msgs::String>("chatter", 1000);
+    chatter_publisher = n.advertise<std_msgs::String>("chatter", 1000);
+    face_recognition_command = n.advertise<face_recognition::FRClientGoal>("/fr_order", 1000);
+    face_recognition_feedback = n.subscribe("/face_recognition/feedback", 10, &QNode::feedbackCB, this);
 	start();
 	return true;
+}
+
+void QNode::sendCommand(int orderID, const char *argument) {
+    face_recognition::FaceRecognitionGoal goal;
+    goal.order_id = orderID;
+    goal.order_argument =  argument;
+    face_recognition_command.publish(goal);
+
 }
 
 void QNode::run() {
 	ros::Rate loop_rate(1);
 	int count = 0;
 	while ( ros::ok() ) {
-
-		std_msgs::String msg;
-		std::stringstream ss;
-		ss << "hello world " << count;
-		msg.data = ss.str();
-		chatter_publisher.publish(msg);
-		log(Info,std::string("I sent: ")+msg.data);
 		ros::spinOnce();
 		loop_rate.sleep();
-		++count;
 	}
 	std::cout << "Ros shutdown, proceeding to close the gui." << std::endl;
 	Q_EMIT rosShutdown(); // used to signal the gui for a shutdown (useful to roslaunch)
 }
 
+void QNode::feedbackCB(face_recognition::FaceRecognitionFeedback feedback) {
+	log(Info, std::string("feedback: ")+ feedback.names[0]);
+}
 
 void QNode::log( const LogLevel &level, const std::string &msg) {
 	logging_model.insertRows(logging_model.rowCount(),1);
