@@ -94,12 +94,13 @@ void MainWindow::on_btn_start_clicked(bool check) {
 void MainWindow::on_btn_new_clicked(bool check) {
     QString name = ui.textin_name->displayText();
     qnode.sendCommand(2, name.toUtf8().constData());
+    sleep(7);
     qnode.sendCommand(3, "none");
-    // qnode.sendCommand(3, "none");
 }
 
-void MainWindow::on_scrollBar_valueChanged(int setting) {
-
+void MainWindow::on_scrollBar_threshold_valueChanged(int setting) {
+    ui.display_threshold->display(setting);
+    qnode.setThreshold(setting);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

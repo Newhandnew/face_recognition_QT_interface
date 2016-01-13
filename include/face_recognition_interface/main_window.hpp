@@ -46,7 +46,7 @@ public Q_SLOTS:
 	void on_actionAbout_triggered();
 	void on_btn_start_clicked(bool check);
 	void on_btn_new_clicked(bool check);
-	void on_scrollBar_valueChanged(int setting);
+	void on_scrollBar_threshold_valueChanged(int setting);
 
 
     /******************************************

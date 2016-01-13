@@ -62,7 +62,14 @@ void QNode::sendCommand(int orderID, const char *argument) {
     goal.order_id = orderID;
     goal.order_argument =  argument;
     face_recognition_command.publish(goal);
+}
 
+void QNode::setThreshold(int setting) {
+	// char* thresholdOutput;
+	double threshold = setting / 100;
+	// sprintf(thresholdOutput, "threshold: %.2f", threshold);
+	// log(Info, thresholdOutput);	
+	ros::param::set("/face_recognition/confidence_value", setting);
 }
 
 void QNode::run() {

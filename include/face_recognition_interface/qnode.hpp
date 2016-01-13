@@ -41,6 +41,7 @@ public:
 	bool init();
 	void run();
 	void sendCommand(int orderID, const char *argument);
+	void setThreshold(int setting);
 
 	/*********************
 	** Logging

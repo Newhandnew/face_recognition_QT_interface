@@ -97,7 +97,7 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>336</width>
+     <width>507</width>
      <height>445</height>
     </size>
    </property>
@@ -289,22 +289,6 @@
  </resources>
  <connections>
   <connection>
-   <sender>action_Quit</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindowDesign</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>quit_button</sender>
    <signal>clicked()</signal>
    <receiver>MainWindowDesign</receiver>
@@ -317,22 +301,6 @@
     <hint type="destinationlabel">
      <x>469</x>
      <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>scrollBar_threshold</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>display_threshold</receiver>
-   <slot>display(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>847</x>
-     <y>472</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>849</x>
-     <y>489</y>
     </hint>
    </hints>
   </connection>
