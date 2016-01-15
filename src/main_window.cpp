@@ -44,6 +44,9 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     } else {
         close();
     }
+
+    // update image
+    QObject::connect(&qnode, SIGNAL(imageUpdated(QImage)), this, SLOT(updateImage(QImage)));
 	/*********************
 	** Logging
 	**********************/
@@ -76,7 +79,11 @@ void MainWindow::showNoMasterMessage() {
  * the user can always see the latest log message.
  */
 void MainWindow::updateLoggingView() {
-        ui.view_logging->scrollToBottom();
+    ui.view_logging->scrollToBottom();
+}
+
+void MainWindow::updateImage(QImage image) {
+    ui.image_show->setPixmap(QPixmap::fromImage(image));
 }
 
 /*****************************************************************************

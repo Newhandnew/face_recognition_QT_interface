@@ -16,6 +16,8 @@
 #include <std_msgs/String.h>
 #include <face_recognition/FRClientGoal.h>
 #include <face_recognition/FaceRecognitionAction.h>
+#include <cv_bridge/cv_bridge.h>
+#include <opencv2/imgproc/imgproc.hpp>
 #include <sstream>
 #include "../include/face_recognition_interface/qnode.hpp"
 
@@ -53,6 +55,7 @@ bool QNode::init() {
     chatter_publisher = n.advertise<std_msgs::String>("chatter", 1000);
     face_recognition_command = n.advertise<face_recognition::FRClientGoal>("/fr_order", 1000);
     face_recognition_feedback = n.subscribe("/face_recognition/feedback", 10, &QNode::feedbackCB, this);
+    image_receiver = n.subscribe("/camera/image_raw", 1, &QNode::imageCB, this);
 	start();
 	return true;
 }
@@ -73,7 +76,7 @@ void QNode::setThreshold(int setting) {
 }
 
 void QNode::run() {
-	ros::Rate loop_rate(1);
+	ros::Rate loop_rate(10);
 	int count = 0;
 	while ( ros::ok() ) {
 		ros::spinOnce();
@@ -85,6 +88,27 @@ void QNode::run() {
 
 void QNode::feedbackCB(face_recognition::FaceRecognitionFeedback feedback) {
 	log(Info, std::string("feedback: ")+ feedback.names[0]);
+}
+
+void QNode::imageCB(const sensor_msgs::ImageConstPtr& msg)
+{
+  //to synchronize with executeCB function.
+  //as far as the goal id is 0, 1 or 2, it's active and there is no preempting request, imageCB function is proceed.
+  // cv_bridge::CvImagePtr cv_ptr;
+  //convert from ros image format to opencv image format
+  // try
+  // {
+  //   cv_ptr = cv_bridge::toCvCopy(msg, "bgr8");
+  // }
+  // catch (cv_bridge::Exception& e)
+  // {
+  //   ROS_ERROR("cv_bridge exception: %s", e.what());
+  //   return;
+  // }
+  QImage currentImage(&(msg->data[0]), msg->width, msg->height, QImage::Format_RGB888);
+  //static QLabel *imageLabel;
+  //imageLabel->setPixmap(QPixmap::fromImage(currentImage));
+  Q_EMIT imageUpdated(currentImage);
 }
 
 void QNode::log( const LogLevel &level, const std::string &msg) {

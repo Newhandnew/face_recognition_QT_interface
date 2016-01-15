@@ -47,7 +47,7 @@ public Q_SLOTS:
 	void on_btn_start_clicked(bool check);
 	void on_btn_new_clicked(bool check);
 	void on_scrollBar_threshold_valueChanged(int setting);
-
+	void updateImage(QImage image);
 
     /******************************************
     ** Manual connections

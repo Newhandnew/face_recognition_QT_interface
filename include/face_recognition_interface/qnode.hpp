@@ -21,6 +21,9 @@
 #include <QThread>
 #include <QStringListModel>
 #include <face_recognition/FaceRecognitionAction.h>
+#include <sensor_msgs/image_encodings.h>
+#include <image_transport/image_transport.h>
+#include <QtGui>
 
 
 /*****************************************************************************
@@ -60,6 +63,7 @@ public:
 Q_SIGNALS:
 	void loggingUpdated();
     void rosShutdown();
+    void imageUpdated(QImage currentImage);
 
 private:
 	int init_argc;
@@ -67,8 +71,10 @@ private:
 	ros::Publisher chatter_publisher;
 	ros::Publisher face_recognition_command;
 	ros::Subscriber face_recognition_feedback;
+	ros::Subscriber image_receiver;
     QStringListModel logging_model;
     void feedbackCB(face_recognition::FaceRecognitionFeedback feedback);
+    void imageCB(const sensor_msgs::ImageConstPtr& msg);
 };
 
 }  // namespace face_recognition_interface
