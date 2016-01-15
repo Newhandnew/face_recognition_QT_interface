@@ -13,6 +13,7 @@
 #include <QMessageBox>
 #include <iostream>
 #include "../include/face_recognition_interface/main_window.hpp"
+#include <sensor_msgs/Image.h>
 
 /*****************************************************************************
 ** Namespaces
@@ -46,7 +47,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     }
 
     // update image
-    QObject::connect(&qnode, SIGNAL(imageUpdated(QImage)), this, SLOT(updateImage(QImage)));
+    QObject::connect(&qnode, SIGNAL(imageUpdated()), this, SLOT(updateImage()));
 	/*********************
 	** Logging
 	**********************/
@@ -82,8 +83,10 @@ void MainWindow::updateLoggingView() {
     ui.view_logging->scrollToBottom();
 }
 
-void MainWindow::updateImage(QImage image) {
-    ui.image_show->setPixmap(QPixmap::fromImage(image));
+void MainWindow::updateImage() {
+    sensor_msgs::Image msg = qnode.image;
+    QImage currentImage(&(msg.data[0]), msg.width, msg.height, QImage::Format_RGB888);
+    ui.image_show->setPixmap(QPixmap::fromImage(currentImage));
 }
 
 /*****************************************************************************

@@ -54,7 +54,7 @@ bool QNode::init() {
 	// Add your ros communications here.
     chatter_publisher = n.advertise<std_msgs::String>("chatter", 1000);
     face_recognition_command = n.advertise<face_recognition::FRClientGoal>("/fr_order", 1000);
-    face_recognition_feedback = n.subscribe("/face_recognition/feedback", 10, &QNode::feedbackCB, this);
+    // face_recognition_feedback = n.subscribe("/face_recognition/feedback", 10, &QNode::feedbackCB, this);
     image_receiver = n.subscribe("/camera/image_raw", 1, &QNode::imageCB, this);
 	start();
 	return true;
@@ -105,10 +105,11 @@ void QNode::imageCB(const sensor_msgs::ImageConstPtr& msg)
   //   ROS_ERROR("cv_bridge exception: %s", e.what());
   //   return;
   // }
-  QImage currentImage(&(msg->data[0]), msg->width, msg->height, QImage::Format_RGB888);
+  // QImage currentImage(&(msg->data[0]), msg->width, msg->height, QImage::Format_RGB888);
   //static QLabel *imageLabel;
   //imageLabel->setPixmap(QPixmap::fromImage(currentImage));
-  Q_EMIT imageUpdated(currentImage);
+	image = *msg;
+  Q_EMIT imageUpdated();
 }
 
 void QNode::log( const LogLevel &level, const std::string &msg) {

@@ -21,8 +21,7 @@
 #include <QThread>
 #include <QStringListModel>
 #include <face_recognition/FaceRecognitionAction.h>
-#include <sensor_msgs/image_encodings.h>
-#include <image_transport/image_transport.h>
+#include <sensor_msgs/Image.h>
 #include <QtGui>
 
 
@@ -45,6 +44,7 @@ public:
 	void run();
 	void sendCommand(int orderID, const char *argument);
 	void setThreshold(int setting);
+	sensor_msgs::Image image;
 
 	/*********************
 	** Logging
@@ -63,7 +63,7 @@ public:
 Q_SIGNALS:
 	void loggingUpdated();
     void rosShutdown();
-    void imageUpdated(QImage currentImage);
+    void imageUpdated();
 
 private:
 	int init_argc;
