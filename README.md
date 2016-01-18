@@ -20,10 +20,12 @@ Add a new launch file for remape the topic name.
 2. git clone https://github.com/Newhandnew/face_recognition   (face recognition)
 3. git clone https://github.com/Newhandnew/face_recognition_QT_interface.git    (face recognition interface)
 4. git clone https://github.com/Newhandnew/usb_cam
-5. cd face_recognition
-6. ./face_recognition.sh  (because the original one use actionlib as service node, I write a quick start script)
-7. open a new terminal window
-8. rosrun face_recognition_interface face_recognition_interface
+5. cd ..
+6. catkin_make		(compile new nodes)
+7. cd src/face_recognition
+8. ./face_recognition.sh  (because the original one use actionlib as service node, I write a quick start script)
+9. open a new terminal window
+10. rosrun face_recognition_interface face_recognition_interface
 
 Now you can use the interface to recognize faces.
 
