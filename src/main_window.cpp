@@ -86,7 +86,8 @@ void MainWindow::updateLoggingView() {
 void MainWindow::updateImage() {
     sensor_msgs::Image msg = qnode.image;
     QImage currentImage(&(msg.data[0]), msg.width, msg.height, QImage::Format_RGB888);
-    ui.image_show->setPixmap(QPixmap::fromImage(currentImage));
+    // change bgr to rgb image
+    ui.image_show->setPixmap(QPixmap::fromImage(currentImage.rgbSwapped()));
 }
 
 /*****************************************************************************
@@ -103,9 +104,17 @@ void MainWindow::on_btn_start_clicked(bool check) {
 
 void MainWindow::on_btn_new_clicked(bool check) {
     QString name = ui.textin_name->displayText();
-    qnode.sendCommand(2, name.toUtf8().constData());
-    sleep(7);
+    // if name is empty, skip adding new person
+    if (~name.isEmpty()) {
+        qnode.sendCommand(2, name.toUtf8().constData());
+        // wait 7 secodnds for capturing pictures
+        sleep(7);
+    }
+    // training command
     qnode.sendCommand(3, "none");
+    sleep(1);
+    // return to recognition mode
+    qnode.sendCommand(1, "none");
 }
 
 void MainWindow::on_scrollBar_threshold_valueChanged(int setting) {
