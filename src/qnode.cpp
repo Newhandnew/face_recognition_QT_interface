@@ -68,11 +68,8 @@ void QNode::sendCommand(int orderID, const char *argument) {
 }
 
 void QNode::setThreshold(int setting) {
-	// char* thresholdOutput;
-	double threshold = setting / 100;
-	// sprintf(thresholdOutput, "threshold: %.2f", threshold);
-	// log(Info, thresholdOutput);	
-	ros::param::set("/face_recognition/confidence_value", setting);
+	double threshold = (double)setting / 100;
+	ros::param::set("/face_recognition/confidence_value", threshold);
 }
 
 void QNode::run() {
